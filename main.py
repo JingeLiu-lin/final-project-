@@ -4,6 +4,7 @@ import requests
 import json 
 from googletrans import Translator
 import googletrans
+from flask import Flask
 
 URL_API = "https://api.ocr.space/parse/image"
 
@@ -112,7 +113,7 @@ def formation(text):
     text = " ".join(text.splitlines())
   return text
   
-if __name__ == "__main__":
+def main():
   img = ask() 
   userInputs = language()
   height, width, _  = img.shape 
@@ -128,3 +129,26 @@ if __name__ == "__main__":
 
   with open("translatedText.txt", "w") as fileoutput:
     fileoutput.write(translated.text)
+
+app = Flask(__name__)
+
+@app.route("/ocr/<img_url>/<language>/<code>/<translate>")
+def flask_main(img_url="image.jpg", language="English", code="eng", translate="English"):
+  img = cv2.imread(str(img_url))
+  if type(img) == type(None):
+    raise ValueError("Cannot find image")
+  height, width, _  = img.shape 
+  file_bytes = size(img, height ,width)
+  result = request_orc(file_bytes,[language, code, translate])
+  parsedText = parsed_text(result)
+  text = single_line(parsedText)
+  newText = " ".join(text.splitlines())
+  translator = Translator()
+  translated = translator.translate(newText, src= language.lower(), dest= translate)
+  return str(translated)
+
+app.run(host="0.0.0.0")
+
+if __name__ == "__main__":
+  #main()
+  print(flask_main())

@@ -10,6 +10,7 @@ name = "final-project-testing"
 version = "0.1.0"
 [tool.poetry.dependencies]
 googletrans = "^2.4"
-python = "^3.7"
 opencv-python = "^4.2"
+python = "^3.8"
+flask = "^1.1.2"
 [tool.poetry.dev-dependencies]
