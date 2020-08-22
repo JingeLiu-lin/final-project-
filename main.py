@@ -147,8 +147,12 @@ def flask_main(img_url="image.jpg", language="English", code="eng", translate="E
   translated = translator.translate(newText, src= language.lower(), dest= translate)
   return str(translated)
 
-app.run(host="0.0.0.0")
+@app.route("/")
+def index():
+  return "This is an OCR translator"
 
 if __name__ == "__main__":
   #main()
-  print(flask_main())
+  app.run(host="0.0.0.0")
+  print("Running...")
+  #print(flask_main())
