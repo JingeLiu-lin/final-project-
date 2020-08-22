@@ -19,7 +19,7 @@ def ask():
       print("Try again")
   return img 
 
-def language(lang = ""):
+def language(lang = "", tran = ""):
   answer = input("Text Language (capitalized):") if lang == "" else lang
   if answer == "Arabic":
     language = "ara"
@@ -68,7 +68,7 @@ def language(lang = ""):
   elif answer == "Turkish":
    language = "tur"
 
-  translate = input("Translated Text Language:")
+  translate = input("Translated Text Language:") if tran == "" else tran
   translate.lower()
   list = []
   list.append(answer)
@@ -133,14 +133,14 @@ def main():
     fileoutput.write(translated.text)
 
 @app.route("/ocr/<img_url>/")
-@app.route("/ocr/<img_url>/<language>/<code>/<translate>")
-def flask_main(img_url="image.jpg", language="English", code="eng", translate="English"):
+@app.route("/ocr/<img_url>/<language>/<translate>")
+def flask_main(img_url="image.jpg", language="English", translate="English"):
   img = cv2.imread(str(img_url))
   if type(img) == type(None):
     raise ValueError("Cannot find image")
   height, width, _  = img.shape 
   file_bytes = size(img, height ,width)
-  result = request_orc(file_bytes,[language, code, translate])
+  result = request_orc(file_bytes,language(language, translate))
   parsedText = parsed_text(result)
   text = single_line(parsedText)
   newText = " ".join(text.splitlines())
