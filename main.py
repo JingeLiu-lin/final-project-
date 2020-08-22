@@ -8,6 +8,8 @@ from flask import Flask
 
 URL_API = "https://api.ocr.space/parse/image"
 
+app = Flask(__name__)
+
 def ask():
   img = None
   while type(img) == type(None): 
@@ -130,8 +132,6 @@ def main():
   with open("translatedText.txt", "w") as fileoutput:
     fileoutput.write(translated.text)
 
-app = Flask(__name__)
-
 @app.route("/ocr/<img_url>/<language>/<code>/<translate>")
 def flask_main(img_url="image.jpg", language="English", code="eng", translate="English"):
   img = cv2.imread(str(img_url))
@@ -154,5 +154,5 @@ def index():
 if __name__ == "__main__":
   #main()
   app.run(host="0.0.0.0")
-  print("Running...")
+  #print("Running...")
   #print(flask_main())
