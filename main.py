@@ -19,8 +19,8 @@ def ask():
       print("Try again")
   return img 
 
-def language():
-  answer = input("Text Language (capitalized):") 
+def language(lang = ""):
+  answer = input("Text Language (capitalized):") if lang == "" else lang
   if answer == "Arabic":
     language = "ara"
   elif answer == "Bulgarian":  
@@ -132,6 +132,7 @@ def main():
   with open("translatedText.txt", "w") as fileoutput:
     fileoutput.write(translated.text)
 
+@app.route("/ocr/<img_url>/")
 @app.route("/ocr/<img_url>/<language>/<code>/<translate>")
 def flask_main(img_url="image.jpg", language="English", code="eng", translate="English"):
   img = cv2.imread(str(img_url))
