@@ -133,19 +133,19 @@ def main():
     fileoutput.write(translated.text)
 
 @app.route("/ocr/<img_url>/")
-@app.route("/ocr/<img_url>/<language>/<translate>")
-def flask_main(img_url="image.jpg", language="English", translate="English"):
+@app.route("/ocr/<img_url>/<lang>/<translate>")
+def flask_main(img_url="image.jpg", lang="English", translate="English"):
   img = cv2.imread(str(img_url))
   if type(img) == type(None):
     raise ValueError("Cannot find image")
   height, width, _  = img.shape 
   file_bytes = size(img, height ,width)
-  result = request_orc(file_bytes,language(language, translate))
+  result = request_orc(file_bytes,language(lang, translate))
   parsedText = parsed_text(result)
   text = single_line(parsedText)
   newText = " ".join(text.splitlines())
   translator = Translator()
-  translated = translator.translate(newText, src= language.lower(), dest= translate)
+  translated = translator.translate(newText, src= lang.lower(), dest= translate)
   return str(translated)
 
 @app.route("/")
