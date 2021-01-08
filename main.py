@@ -19,8 +19,9 @@ def ask():
       print("Try again")
   return img 
 
-def language(lang = "", tran = ""):
-  answer = input("Text Language (capitalized):") if lang == "" else lang
+
+def lang_code_check(answer):
+  language = ""
   if answer == "Arabic":
     language = "ara"
   elif answer == "Bulgarian":  
@@ -68,13 +69,72 @@ def language(lang = "", tran = ""):
   elif answer == "Turkish":
    language = "tur"
 
+  return language
+
+def google_codes(answer):
+  language = "en"
+  if answer == "arabic":
+    language = "ar"
+  elif answer == "bulgarian":  
+    language = "bg"
+  elif answer == "chinese (simplified)":
+    language = "zh-cn"
+  elif answer == "chinese (traditional)":
+    language = "zn-tw"
+  elif answer == "croatian":
+    language = "hr"
+  elif answer == "danish":
+    language = "da"
+  elif answer == "dutch":
+   language = "nl"
+  elif answer == "english":
+   language = "en"
+  elif answer == "finnish":
+   language = "fi"
+  elif answer == "french":
+   language = "fr"
+  elif answer == "german":
+    language = "du"
+  elif answer == "greek":
+    language = "el"
+  elif answer == "hungarian":
+    language = "hu"
+  elif answer == "korean":
+    language = "ko"
+  elif answer == "italian":
+   language = "it"
+  elif answer == "japanese":
+   language = "ja"
+  elif answer == "polish":
+   language = "pl"
+  elif answer == "portuguese":
+   language = "pt"
+  elif answer == "russian":
+   language  = "ru"
+  elif answer == "slovenian":
+   language = "sl"
+  elif answer == "spanish":
+   language = "es"
+  elif answer == "swedish":
+   language = "sv"
+  elif answer == "turkish":
+   language = "tr"
+
+  return language
+
+def language(lang = "", tran = ""):
+  answer = input("Text Language (capitalized):") if lang == "" else lang
+  language = lang_code_check(answer)
+  
+
   translate = input("Translated Text Language:") if tran == "" else tran
   translate.lower()
-  list = []
-  list.append(answer)
-  list.append(language)
-  list.append(translate)
-  return list
+  list_code = []
+  list_code.append(answer)
+  list_code.append(language)
+  list_code.append(translate)
+  list_code.append(lang_code_check(translate))
+  return list_code
 
 def size(img, hight, width):
   # height, width, _  = img.shape 
@@ -140,12 +200,18 @@ def flask_main(img_url="image.jpg", lang="English", translate="English"):
     raise ValueError("Cannot find image")
   height, width, _  = img.shape 
   file_bytes = size(img, height ,width)
-  result = request_orc(file_bytes,language(lang, translate))
+  lang_list = language(lang, translate)
+  result = request_orc(file_bytes,lang_list)
   parsedText = parsed_text(result)
   text = single_line(parsedText)
   newText = " ".join(text.splitlines())
+  print(newText)
   translator = Translator()
-  translated = translator.translate(newText, src= lang.lower(), dest= translate)
+  print("TRY TO TRANSLATE")
+  print(google_codes(lang.lower()))
+  print(google_codes(translate.lower()))
+  translated = translator.translate(newText, src= google_codes(lang.lower()), dest= google_codes(translate.lower()))
+  print("TRANSLATION DONE")
   return str(translated)
 
 @app.route("/")
