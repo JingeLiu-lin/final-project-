@@ -22,51 +22,52 @@ def ask():
 
 def lang_code_check(answer):
   language = ""
-  if answer == "Arabic":
+  answer = answer.lower()
+  if answer == "arabic":
     language = "ara"
-  elif answer == "Bulgarian":  
+  elif answer == "bulgarian":  
     language = "bul"
-  elif answer == "Chinese (Simplified)":
+  elif answer == "chinese (simplified)":
     language = "chs"
-  elif answer == "Chinese (Traditional)":
+  elif answer == "chinese (traditional)":
     language = "cht"
-  elif answer == "Croatian":
+  elif answer == "croatian":
     language = "hrv"
-  elif answer == "Danish":
+  elif answer == "danish":
     language = "dan"
-  elif answer == "Dutch":
+  elif answer == "dutch":
    language = "dut"
-  elif answer == "English":
+  elif answer == "english":
    language = "eng"
-  elif answer == "Finnish":
+  elif answer == "finnish":
    language = "fin"
-  elif answer == "French":
+  elif answer == "french":
    language = "fre"
-  elif answer == "German":
+  elif answer == "german":
     language = "ger"
-  elif answer == "Greek":
+  elif answer == "greek":
     language = "gre"
-  elif answer == "Hungarian":
+  elif answer == "hungarian":
     language = "hun"
-  elif answer == "Korean":
+  elif answer == "korean":
     language = "kor"
-  elif answer == "Italian":
+  elif answer == "italian":
    language = "ita"
-  elif answer == "Japanese":
+  elif answer == "japanese":
    language = "jpn"
-  elif answer == "Polish":
+  elif answer == "polish":
    language = "pol"
-  elif answer == "Portuguese":
+  elif answer == "portuguese":
    language = "pol"
-  elif answer == "Russian":
+  elif answer == "russian":
    language  = "rus"
-  elif answer == "Slovenian":
+  elif answer == "slovenian":
    language = "slv"
-  elif answer == "Spanish":
+  elif answer == "spanish":
    language = "spa"
-  elif answer == "Swedish":
+  elif answer == "swedish":
    language = "swe"
-  elif answer == "Turkish":
+  elif answer == "turkish":
    language = "tur"
 
   return language
@@ -200,18 +201,18 @@ def flask_main(img_url="image.jpg", lang="English", translate="English"):
     raise ValueError("Cannot find image")
   height, width, _  = img.shape 
   file_bytes = size(img, height ,width)
+  print(lang)
+  print(translate)
   lang_list = language(lang, translate)
-  result = request_orc(file_bytes,lang_list)
+  result = request_orc(file_bytes,lang_list[0:2])
   parsedText = parsed_text(result)
   text = single_line(parsedText)
   newText = " ".join(text.splitlines())
   print(newText)
   translator = Translator()
-  print("TRY TO TRANSLATE")
   print(google_codes(lang.lower()))
   print(google_codes(translate.lower()))
   translated = translator.translate(newText, src= google_codes(lang.lower()), dest= google_codes(translate.lower()))
-  print("TRANSLATION DONE")
   return str(translated)
 
 @app.route("/")
