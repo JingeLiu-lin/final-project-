@@ -15,7 +15,7 @@ idna==2.10
 itsdangerous==1.1.0
 Jinja2==2.11.2
 MarkupSafe==1.1.1
-numpy==1.19.1
+numpy==1.22.0
 opencv-python==4.2.0.34
 requests==2.24.0
 rfc3986==1.4.0
